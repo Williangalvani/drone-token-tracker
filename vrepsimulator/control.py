@@ -38,6 +38,10 @@ class Controller:
         self.qrfinder = QrFinder()
         self.interface.set_target(0,0,1,0)
 
+        self.pidx = PidController(0.001,0,0)
+        self.pidy = PidController(0.0003, 0.0001, 0.001)
+        self.pidz = PidController(0.0001, 0, 0)
+
         while True:
             print "loop"
             time.sleep(0.05)
@@ -70,16 +74,19 @@ class Controller:
         targety = 256
         targetsize = 50
 
-        dx = targetsize - self.qrfinder.size[0]
-        dy = self.qrfinder.center[0] - targetx
-        dz = self.qrfinder.center[1] - targety
+        dx = self.pidx.update(self.qrfinder.size[0],targetsize)
+        dy = self.pidy.update(self.qrfinder.center[0],targetx)
+        dz = self.pidz.update(self.qrfinder.center[1],targety)
+
+
+
 
 
         print dx, dy, self.qrfinder.size
 
         distancia = 1/(self.qrfinder.size[1]+0.00001)
 
-        self.interface.move(dx*0.003,- dy*0.0005, -dz*0.0001, 0)
+        self.interface.move(dx,dy, dz, 0)
 
 
 
