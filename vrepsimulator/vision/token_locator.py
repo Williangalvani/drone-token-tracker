@@ -70,21 +70,38 @@ class QrFinder():
                             self.corrected)  ### transforms the image to make the token planas
 
         bits = []
-        gridsize = 8
-        step = 100 / (gridsize + 3)
+        gridsize = 3
+        step = int(95 / (gridsize + 3))
         min, max = cv2.minMaxLoc(self.corrected)[:2]
         avg = (min + max) / 2
         offset = 4
 
-        topleft = 1 if self.corrected[1 * step + offset][1 * step + offset] < avg else 0
-        topright = 1 if self.corrected[1 * step + offset][(gridsize + 1) * step + offset] < avg else 0
-        bottomright = 1 if self.corrected[(gridsize + 1) * step + offset][(gridsize + 1) * step + offset] < avg else 0
-        bottomleft = 1 if self.corrected[(gridsize + 1) * step + offset][1 * step + offset] < avg else 0
-        cv2.circle(self.corrected, ( (gridsize + 1) * step + offset, 1 * step + offset), 1, (255, 0, 0), 2)
+
+
+
+        corners = [(1 * step + offset, 1 * step + offset),
+                   (1 * step + offset, (gridsize + 2) * step + offset),
+                   ((gridsize + 2) * step + offset, 1 * step + offset),
+                   ((gridsize + 2) * step + offset, (gridsize + 2) * step + offset)]
+
+        topleft, topright,bottomleft, bottomright = corners
+
+
+        topleft = 1 if self.corrected[topleft[0]][topleft[1]] < avg else 0
+        topright = 1 if self.corrected[topright[0]][topright[1]] < avg else 0
+        bottomright = 1 if self.corrected[bottomright[0]][bottomright[1]] < avg else 0
+        bottomleft = 1 if self.corrected[bottomleft[0]][bottomleft[1]] < avg else 0
+
+
+        for corner in corners:
+            cv2.circle(self.corrected, (corner[0], corner[1]), 1, (255, 0, 0), 2)
+
         ### abort if wrong number of markers
         if topleft + topright + bottomright + bottomleft != 3:
-            # print "bad"
+            #print "bad! corners not detected!"
             return None
+
+        print topleft, topright, bottomright, bottomleft
 
         ### detects need of rotation
         angle = 0
@@ -144,13 +161,14 @@ class QrFinder():
     def find_code(self,img ):
         h, w = img.shape[:2]
 
-        #gray = cv2.cvtColor(self.img, cv2.COLOR_BGR2GRAY)
+
         gray=img
         thrs1 = cv2.getTrackbarPos('thrs1', 'edge')
         thrs2 = cv2.getTrackbarPos('thrs2', 'edge')
         edge = cv2.Canny(gray, thrs1, thrs2, apertureSize=5)
-        vis = img.copy()
+        vis = cv2.cvtColor(img.copy(), cv2.COLOR_GRAY2BGR)
         vis /= 2
+
         #vis[edge != 0] = (0, 255, 0)
         #cv2.imshow('edge', vis)
 

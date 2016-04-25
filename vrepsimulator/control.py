@@ -27,7 +27,7 @@ class PidController():
         integral = self.I *self.cumulatedError
         self.lastError = error
 
-        print "P:", proportional, " I:", integral, " D:", derivative
+        #print "P:", proportional, " I:", integral, " D:", derivative
         return derivative + proportional + integral
 
 
@@ -51,8 +51,6 @@ class Controller:
             self.qrfinder.find_code(img)
             ### esta funcao faz o controle do robo
             self.control()
-
-            cv2.imshow("target", img)
 
             ## esta parte do codigo detecta se a barra de espaco foi pressionada, para parar a simulacao
             ch = cv2.waitKey(5) & 0xFF
