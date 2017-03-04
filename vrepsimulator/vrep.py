@@ -24,7 +24,7 @@
 # along with the REMOTE API.  If not, see <http://www.gnu.org/licenses/>.
 # -------------------------------------------------------------------
 #
-# This file was automatically created for V-REP release V3.3.0 on February 19th 2016
+# This file was automatically created for V-REP release V3.3.2 on August 29th 2016
 
 import platform
 import struct
@@ -240,11 +240,11 @@ def simxReadForceSensor(clientID, forceSensorHandle, operationMode):
     arr2 = []
     for i in range(3):
         arr2.append(torqueVector[i])
-    if sys.version_info[0] == 3:
-        state=state.value
-    else:
-        state=ord(state.value)
-    return ret, state, arr1, arr2 
+    #if sys.version_info[0] == 3:
+    #    state=state.value
+    #else:
+    #    state=ord(state.value)
+    return ret, state.value, arr1, arr2 
 
 def simxBreakForceSensor(clientID, forceSensorHandle, operationMode):
     '''
