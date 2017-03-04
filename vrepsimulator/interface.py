@@ -21,7 +21,7 @@ class RobotInterface():
 
         # modo da API, como eh False, esta no modo assincrono(os ticks da simulacao rodam em velocidade independente)
         vrep.simxSynchronous(self.clientID, False)
-        print "connected with id ", self.clientID
+        print("connected with id ", self.clientID)
 
         self.oldtarget = None
         self.camera = None
@@ -57,7 +57,7 @@ class RobotInterface():
     def get_target(self):
         time.sleep(0.1)
         ret, xyz =vrep.simxGetObjectPosition(self.clientID, self.target, -1,vrep.simx_opmode_oneshot)
-        print ret,xyz
+        print(ret, xyz)
         x,y,z = xyz
         ret, orientation = vrep.simxGetObjectOrientation(self.clientID, self.target,-1, vrep.simx_opmode_oneshot)
         rot = orientation[2]
@@ -94,6 +94,6 @@ class RobotInterface():
                                                                                         0,
                                                                                         vrep.simx_opmode_oneshot_wait)
             data = dict(zip(array, handles))
-            self.camera = [value for key, value in data.iteritems() if "Vision_sensor" in key][0]
-            self.target = [value for key, value in data.iteritems() if "Quadricopter_target" == key][0]
+            self.camera = [value for key, value in data.items() if "Vision_sensor" in key][0]
+            self.target = [value for key, value in data.items() if "Quadricopter_target" == key][0]
             vrep.simxGetVisionSensorImage(self.clientID, self.camera, 1, vrep.simx_opmode_streaming)

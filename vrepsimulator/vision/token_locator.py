@@ -4,7 +4,7 @@
 import cv2
 import numpy as np
 
-from itertools import tee, izip
+from itertools import tee
 import binascii
 import math
 
@@ -13,7 +13,7 @@ def pairwise(iterable):
     "s -> (s0,s1), (s1,s2), (s2, s3), ..."
     a, b = tee(iterable)
     next(b, None)
-    return izip(a, b)
+    return zip(a, b)
 
 
 def nothing(kargs=[]):
@@ -101,7 +101,7 @@ class QrFinder():
             #print "bad! corners not detected!"
             return None
 
-        print topleft, topright, bottomright, bottomleft
+        print(topleft, topright, bottomright, bottomleft)
 
         ### detects need of rotation
         angle = 0
@@ -144,7 +144,7 @@ class QrFinder():
             bitstring = bitstring[:-8]
         checksumcalculated = bin(sum(map(ord, bitstring)) % 255)
         if checksum == checksumcalculated[2:]:
-            print result#, checksum, checksumcalculated
+            print(result)#, checksum, checksumcalculated
 
     def __init__(self):
         self.cap = None
@@ -193,8 +193,8 @@ class QrFinder():
         for candidate in selected:
             try:
                 self.try_to_decode(candidate, gray, vis)
-            except Exception, e:
-                print e
+            except Exception as e:
+                print(e)
 
         cv2.imshow('contours', vis)
 

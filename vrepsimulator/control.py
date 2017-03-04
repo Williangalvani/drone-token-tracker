@@ -43,7 +43,7 @@ class Controller:
         self.pidz = PidController(0.0001, 0, 0)
 
         while True:
-            print "loop"
+            print("loop")
             time.sleep(0.05)
 
             ### esta funcao, do "tracker" faz o processamento da imagem
@@ -80,7 +80,7 @@ class Controller:
 
 
 
-        print dx, dy, self.qrfinder.size
+        print(dx, dy, self.qrfinder.size)
 
         distancia = 1/(self.qrfinder.size[1]+0.00001)
 
