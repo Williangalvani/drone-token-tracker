@@ -1,9 +1,10 @@
 __author__ = 'will'
-from vreptest import vrep
+import vrep
 import numpy as np
 import cv2
 import time
 from math import sin, cos, pi
+
 class RobotInterface():
     """
     Esta classe facilita a interface com o simulador
